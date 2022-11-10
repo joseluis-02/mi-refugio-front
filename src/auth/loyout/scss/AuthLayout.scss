@@ -1,0 +1,13 @@
+@import "../.././../scss/index.scss";
+$pantalla-celular: 576px;
+.panel-lado-izquierdo{
+    background-color: $claro-tema;
+    height: 400px;
+    margin-top: 20px;
+    border-radius: 20px;
+}
+@media (max-width: $pantalla-celular) {
+    .panel-lado-izquierdo{
+        display: none;
+    }
+}
