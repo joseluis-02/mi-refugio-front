@@ -1,13 +1,36 @@
 @import "../.././../scss/index.scss";
 $pantalla-celular: 576px;
-.panel-lado-izquierdo{
-    background-color: $claro-tema;
-    height: 400px;
-    margin-top: 20px;
-    border-radius: 20px;
+.signin-signup {
+    &__izquierda {
+      overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $oscuro-tierra;
+      color: $oscuro-tema-texto;
+      
+  
+      div {
+        z-index: 1;
+  
+        h2 {
+          display: flex;
+          align-items: center;
+          font-size: 1.5rem;
+          font-weight: bold;
+          padding: 10px;
+          font-family: $fuente-primario;
+        }
+      }
+    }
+    &__derecha{
+      background-color: $oscuro-tierra;
+      color: $oscuro-tema-texto;
+    }
 }
 @media (max-width: $pantalla-celular) {
-    .panel-lado-izquierdo{
+    .signin-signup__izquierda{
         display: none;
     }
 }
