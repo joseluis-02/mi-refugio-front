@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
-import { Col, Button, Row, Container, Card, Form, Spinner } from "react-bootstrap";
+import { Col, Button, Row, Container, Card, Form, Spinner, FloatingLabel } from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { useForm } from "../../hooks";
 import { AuthLayout } from "../loyout/AuthLayout";
 import { faG } from "@fortawesome/free-solid-svg-icons";
-import { checkingAthentication, startGoogleSignIn } from "../../store/auth";
+import { iniciarSesionEmailPassword, startGoogleSignIn } from "../../store/auth";
 import {toast} from 'react-toastify';
 
 
@@ -14,7 +14,6 @@ import {toast} from 'react-toastify';
 export const LoginPage = () => {
 
   const {estado} = useSelector(state => state.auth);
-  
   const dispatch = useDispatch();
 
   const {email, password, onInputChange, formState} = useForm({
@@ -36,11 +35,7 @@ export const LoginPage = () => {
       return;
     }
     
-    dispatch( checkingAthentication(formState) );
-    
-    
-    
-    
+    dispatch( iniciarSesionEmailPassword(formState) );
   }
 
   const onGoogleSignIn = () => {
@@ -61,24 +56,33 @@ export const LoginPage = () => {
                   <div className="mb-3">
                     <Form onSubmit={onSubmitForm}>
 
+                      
                       <Form.Group className="mb-3">
-                        <Form.Control 
-                          type="email" 
-                          placeholder="Correo electrónico"
-                          name="email"
-                          value={email}
-                          onChange={ onInputChange }
-                         />
+                        <FloatingLabel
+                            label="Correo electrónico"
+                        >
+                          <Form.Control 
+                            type="email" 
+                            placeholder="Correo electrónico"
+                            name="email"
+                            value={email}
+                            onChange={ onInputChange }
+                          />
+                        </FloatingLabel>
                       </Form.Group>
 
                       <Form.Group className="mb-3">
-                        <Form.Control 
-                          type="password" 
-                          placeholder="Password"
-                          name="password"
-                          value={password}
-                          onChange={ onInputChange }
-                        />
+                        <FloatingLabel
+                            label="Clave de acceso"
+                        >
+                          <Form.Control 
+                            type="password" 
+                            placeholder="Password"
+                            name="password"
+                            value={password}
+                            onChange={ onInputChange }
+                          />
+                        </FloatingLabel>
                       </Form.Group>
 
                       <Form.Group className="mb-3">
@@ -110,7 +114,7 @@ export const LoginPage = () => {
                     </Form>
                     <div className="mt-3">
                       <p className="mb-0  text-center">
-                        Aun no estás registrado?{" "}
+                        Aún no estás registrado?{" "}
                         <Link  className="text-primary fw-bold" to="/auth/register">
                            Regístrate
                         </Link>

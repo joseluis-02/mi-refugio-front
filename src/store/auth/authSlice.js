@@ -9,7 +9,9 @@ export const authSlice = createSlice({
     nombres: null,
     apellidos: null,
     fecha_nacimiento: null,
-    foto: null,
+    expira: null,
+    ubicaion: null,
+    biografia: null,
     errorMessage: null
 
    },
@@ -21,6 +23,9 @@ export const authSlice = createSlice({
         state.nombres= payload.nombre;
         state.apellidos= payload.apellidos;
         state.fecha_nacimiento= payload.fecha_nacimiento;
+        state.biografia = payload.biografia;
+        state.expira = payload.exp;
+        state.ubicaion = payload.ubicaion;
         state.errorMessage= null;
     },
     logout: (state, {payload}) => {
@@ -29,11 +34,14 @@ export const authSlice = createSlice({
         state.email= null;
         state.nombres= null;
         state.apellidos= null;
-        state.foto= null;
+        state.fecha_nacimiento = null;
+        state.biografia = null;
+        state.ubicaion = null
+        state.expira = null;
         state.errorMessage= payload.message;
 
     },
-    checkingCredentials: (state) => {
+    verificandoCredenciales: (state) => {
         state.estado = 'verificando';
     },
     cargandoMiRefugio: (state) => {
@@ -44,4 +52,4 @@ export const authSlice = createSlice({
 
 
 // Action creators are generated for each case reducer function
-export const { login, logout, checkingCredentials,cargandoMiRefugio } = authSlice.actions;
+export const { login, logout, verificandoCredenciales,cargandoMiRefugio } = authSlice.actions;

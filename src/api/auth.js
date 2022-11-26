@@ -1,38 +1,41 @@
 import { API_HOST_PRODUCCION, Token } from "../utils";
 import jwt_decode from "jwt-decode";
-
-
-export const signLoginEmalPass = async(user) => {
-    //const url = `${API_HOST_PRODUCCION}/login`;
-    const url = `${API_HOST_PRODUCCION}/login`;
-
-    const data = {
-        ...user,
-        email: user.email.toLowerCase()
+//Registrar nuevo usuario
+export const registrarUsuarioApi = (user) =>{
+    const url = `${API_HOST_PRODUCCION}/registro`;
+    const userTemp = {
+      ...user,
+      email: user.email.toLowerCase(),
+      fechaNacimiento: `${user.anio}-${user.mes}-${user.dia}T00:00:00Z`
     };
-
+    delete userTemp.dia;
+    delete userTemp.mes;
+    delete userTemp.anio;
+    //console.log(userTemp);
     const params = {
-        method: "POST",
-        headers: {
+      method: "POST",
+      headers: {
         "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
+      },
+      body: JSON.stringify(userTemp)
     };
+  console.log(JSON.stringify(userTemp));
+    return fetch(url, params)
+      .then(response => {
+        if (response.status >= 200 && response.status < 300) {
+          return response.json();
+        }
+        return { code: 400, message:"Error no se pudo registrar" };
+      })
+      .then(result => {
+        return result;
+      })
+      .catch(err => {
+        return err;
+      });
+  }
+//Login con email y password
 
-    return await fetch(url, params)
-        .then(response => {
-            if (response.status >= 200 && response.status < 300) {
-                return response.json();
-            }
-            return { message: "Usuario o contraseña incorrectos" };
-        })
-        .then(result => {
-            return result;
-        })
-        .catch(err => {
-            return err;
-        });
-}
 
 export const setTokenUser = (token) => {
     localStorage.setItem(Token, token);
@@ -47,14 +50,13 @@ export const userLoged = () => {
     const token = getTokenUser();
     if(!token){
         userLogout();
-        return null;
+        return false;
     }
     if(tokenExpirado(token)){
         userLogout();
-        return null;
-    }else{
-        return jwt_decode(token);
+        return 'expirado';
     }
+    return jwt_decode(token);
 
 }
 const tokenExpirado =(token)=> {

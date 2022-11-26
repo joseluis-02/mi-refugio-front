@@ -6,7 +6,6 @@ import { MiRefugioRoutes } from '../mirefugio/routes/MiRefugioRoutes';
 import { startLogin } from '../store/auth';
 
 export const AppRouter = () => {
-
   const {estado} = useSelector(state => state.auth);
   const dispatch = useDispatch();
   useEffect(() => {

@@ -1,72 +1,120 @@
 
-//Son acciones que se pueden despachar
-//Internamente tienen tareas asincronas
 import {toast} from 'react-toastify';
-import { setTokenUser, signLoginEmalPass, userLoged, userLogout } from "../../api";
-import { checkingCredentials, login, logout,cargandoMiRefugio } from "./authSlice"
+import { setTokenUser, userLoged, userLogout } from '../../api/auth';
+import { API_HOST_PRODUCCION } from '../../utils';
+import { login, logout,cargandoMiRefugio, verificandoCredenciales } from "./authSlice";
 
 //Autenticandose con email y password
-export const checkingAthentication = (user) => {
+export const verificandoAutenticacion = () => {
     return async( dispatch ) => {
-        //Realizar la peticion a la API al backend
-        try{
-            dispatch( checkingCredentials() );
-            signLoginEmalPass(user)
-            .then(response => {
-                if (response.message) {
-                toast.warning(response.message);
-                dispatch( logout(response));
-                //return response.message;
-                } else {
-                    dispatch( cargandoMiRefugio() )
-                    setTokenUser(response.token);
-                    const res = userLoged();
-                    if(res){
-                        console.log(res);
-                        dispatch( login( res ));
-                    }
-                }
-            })
-            .catch(() => {
-                toast.error("No se pudo conectar al servidor, revise su conexión a internet");
-            })
-            .finally(() => {
-                console.log("se finalizo la petición");
-            });
-        }catch(err){
-            console.log(err);
-        }
-       
+        dispatch( verificandoCredenciales() );
     }
 }
-
 //Autenticandose con Google
 export const startGoogleSignIn = () => {
     return ( dispatch ) => {
-        console.log("Logueando con Google");
+        //console.log("Logueando con Google");
+        //Aquí va el código para iniciar sesion con google
     }
 }
-//Iniciar sesion
+//Iniciar sesion con email y password
+export const iniciarSesionEmailPassword = (user) => {
+    return async( dispatch ) => {
+        //Iniciar verificacion del usuario
+        dispatch( verificandoCredenciales() );
+        const url = `${API_HOST_PRODUCCION}/login`;
+        const data = {
+            ...user,
+            email: user.email.toLowerCase()
+        };
+        const params = {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        };
+
+        try{
+            const result = await fetch(url, params);
+            if (!result.ok){
+                toast.warning("Email/password inválidas");
+                dispatch( logout({message: "Email/password inválidas"}) );
+                return;
+            }
+            //Iniciar cargar la app
+            dispatch( cargandoMiRefugio() );
+            const {token} = await result.json();
+            //Establecer token del usuario
+            setTokenUser(token);
+            //llamar a iniciar Sesión
+            dispatch( startLogin() );
+            
+        }catch(error){
+            console.log("Error en la petición: "+ error.message);
+        }
+    }
+}
+//Iniciar sesión a la app
 export const startLogin = () => {
     return ( dispatch ) => {
-        const resp = userLoged();
-        if(resp===null){
-            console.log(resp);
-            dispatch( logout({message:"No se logró verficar"}));
-        }else{
-            dispatch( login(resp) );
+        const data = userLoged();
+        if(data === false){
+            dispatch( logout({message: null}) );
+            return;
         }
-        
+        if(data === 'expirado'){
+            dispatch( logout({message: 'Ha expirado su token de verificación'}) );
+            toast.error("Ha expirado el token, inicie sesión nuevamente");
+            return;
+        }
+        //console.log(data);
+        dispatch( login(data) );
     }
 }
-
 //Salir de la app
 export const startLogout = () => {
     return ( dispatch ) => {
-        
         userLogout();
-
         dispatch( logout({message: null}) );
+    }
+}
 
+//Registrar nuevo usuario
+export const registrarUsuario = (user) => {
+    return async(dispatch) => {
+        dispatch( verificandoCredenciales() );
+        const url = `${API_HOST_PRODUCCION}/registro`;
+        const userTemp = {
+        ...user,
+        email: user.email.toLowerCase(),
+        fechaNacimiento: `${user.anio}-${user.mes}-${user.dia}T00:00:00Z`
+        };
+        delete userTemp.dia;
+        delete userTemp.mes;
+        delete userTemp.anio;
+        //console.log(userTemp);
+        const params = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userTemp)
+        };
+
+        try{
+            const result = await fetch(url, params);
+            if (!result.ok){
+                toast.warning("Email ya se encuentra registrado");
+                return;
+            }
+            //Iniciar cargar la app
+            toast.success("Felicidades! se creó exitosamente");
+            await dispatch( iniciarSesionEmailPassword({email:userTemp.email, password:userTemp.password}) );
+
+            
+        }catch(error){
+            console.log("Error en la petición: "+ error.message);
+        }
     }
 }
