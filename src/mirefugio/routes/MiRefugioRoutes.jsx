@@ -10,15 +10,6 @@ import { UserPage } from "../pages/UserPage";
 import { UsersPage } from "../pages/UsersPage";
 
 export const MiRefugioRoutes = () => {
-  const {uid} = useSelector(state => state.auth);
-  const {isLoading} = useSelector(state => state.user);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch( obtenerUsarioPerfilApi(uid) );
-  }, [])
-  if (isLoading){
-    return (<div className="position-absolute top-50 start-50 translate-middle"><LogoMiRefugio /></div>)
-  }
   return (
     <Routes>
         <Route path="/" element={<MiRefugioPage />} />

@@ -59,11 +59,11 @@ export const LoginPage = () => {
                       
                       <Form.Group className="mb-3">
                         <FloatingLabel
-                            label="Correo electrónico"
+                            label="celular o email"
                         >
                           <Form.Control 
-                            type="email" 
-                            placeholder="Correo electrónico"
+                            type="text" 
+                            placeholder="celular o email"
                             name="email"
                             value={email}
                             onChange={ onInputChange }

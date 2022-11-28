@@ -1,23 +1,33 @@
+import { useEffect } from "react";
 import { faBarChart, faUser } from "@fortawesome/free-regular-svg-icons";
 import { faBars, faEllipsisV, faHouse, faPen, faRightToBracket, faSpa, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {} from '@fortawesome/free-regular-svg-icons';
 import { Button, Container, Form, Image, Nav, Navbar, NavDropdown, Offcanvas } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { LogoMiRefugio } from "../../components";
 import { startLogout } from "../../store/auth";
+import { obtenerUsarioPerfilApi } from "../../store/mirefugio/slices/user";
+import AvatarNoFound from "../../assets/png/user-default.png";
+import { API_HOST_PRODUCCION } from "../../utils";
+
 
 export const NavBarApp = () => {
 
-    const { id,nombre, apellidos,foto } = useSelector( state => state.user);
-    const dispatch = useDispatch();
+  const {uid} = useSelector(state => state.auth);
+  const {foto} = useSelector(state => state.user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch( obtenerUsarioPerfilApi(uid) );
+  }, [uid]);
+  const avatarUrl = (foto)
+    ? `${API_HOST_PRODUCCION}/obtenerfotoperfil?id=${uid}`
+    : AvatarNoFound;
 
     const onLogout = () => {
         dispatch( startLogout() );
     }
-
-    const urlPerfil = `https://mi-refugio.herokuapp.com/obtenerfotoperfil?id=${id}`;
   return (
     <Navbar sticky="top" expand='xl' className="bg-dark">
       <Container fluid>
@@ -41,7 +51,7 @@ export const NavBarApp = () => {
             <Offcanvas.Title id={`offcanvasNavbarLabel-expand-xl`}>
             <Image
               alt=""
-              src={(foto) ? urlPerfil : 'https://startupheretoronto.com/wp-content/uploads/2019/03/default-user-image-2.png'}
+              src={avatarUrl}
               width="50"
               height="50"
               className="d-inline-block align-center mx-0"
@@ -77,7 +87,7 @@ export const NavBarApp = () => {
                   <FontAwesomeIcon icon={faUsers} />
                 </Button>
               </Link>
-              <Link  className="fw-bold nav-link" to={`/usuario${id}`}>
+              <Link  className="fw-bold nav-link" to={`/usuario${uid}`}>
                 <Button 
                   className="rounded-circle opacity-70"
                   variant="light"

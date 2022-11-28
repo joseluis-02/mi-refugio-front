@@ -1,25 +1,32 @@
 import React, { useState, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-toastify";
 import { API_HOST_PRODUCCION } from "../../../../utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faImages, faSave} from '@fortawesome/free-regular-svg-icons';
-import AvatarNoFound from "../../../../assets/png/user-default.png";
-import PortadaNoFound from "../../../../assets/jpg/banner-defalut.jpg";
-//import { Camera } from "../../../utils/Icons";
 import {
   uploadBannerApi,
   uploadAvatarApi,
   updateInfoApi,
 } from "../../../../api/user";
+import { obtenerUsarioPerfilApi } from "../../../../store/mirefugio/slices/user";
 import { useForm } from "../../../../hooks";
 import { FloatingLabel, Form, InputGroup, Spinner } from "react-bootstrap";
 import "./EditUserForm.scss";
 
 
 
+
+
+
 export const EditUserForm = ({user, setShowModal}) => {
  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {uid} = useSelector(state => state.auth);
+
   const {formState,onInputChange} = useForm(initialValue(user));
   const [loading, setLoading] = useState(false);
   const banner = user?.portada
@@ -93,7 +100,11 @@ export const EditUserForm = ({user, setShowModal}) => {
     }
     setLoading(false);
     setShowModal(false);
-    window.location.reload();
+    //navigate(`?id=${ uid }`);
+    //<Navigate to={`/usuario${uid}`}/>
+    //dispatch( obtenerUsarioPerfilApi(uid) );
+    window.location.reload(true);
+    //this.reload();
   }
 
   return (
@@ -150,20 +161,6 @@ export const EditUserForm = ({user, setShowModal}) => {
             onChange={onInputChange}
           />
         </InputGroup>
-        <FloatingLabel
-          label="Estado actual"
-          className="mb-2"
-        >
-          <Form.Select
-            name="estadoEmocinal"
-            value={formState.estadoEmocinal}
-            onChange={onInputChange}
-          >
-            <option value={''}>Sin definir</option>
-            <option value={'ocupado'}>Ocupado(a)</option>
-            <option value={'disponible'}>Disponible</option>
-          </Form.Select>
-        </FloatingLabel>
         <FloatingLabel
           controlId="floatingTextarea"
           label="Iglesia"

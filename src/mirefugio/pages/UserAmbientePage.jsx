@@ -20,7 +20,7 @@ export const UserAmbientePage = () => {
     }, []);
     const {onInputChange,formState,onResetForm} = useForm({
         libroBiblico: '',
-        capitulo: '',
+        capitulo: '0',
         versiculo: '',
         mensaje: ''
       });

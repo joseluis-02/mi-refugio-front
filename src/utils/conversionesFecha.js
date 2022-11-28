@@ -15,7 +15,7 @@ export const obtenerHoraLocal = (fecha) => {
 
 export const obtenerDia = (fecha) => {
     const f = new Date(fecha);
-    return f.getDate();
+    return f.getDate() +1;
 }
 
 export const obtenerGestion = (fecha) => {

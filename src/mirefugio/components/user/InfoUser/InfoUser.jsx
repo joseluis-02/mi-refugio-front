@@ -9,11 +9,11 @@ export const InfoUser = ({user}) => {
   
   return (
     <div className="info-user">
-      <h2 className="name">
+      <h2 className="name text-capitalize">
         <FontAwesomeIcon icon={faUser} /> {user?.nombre} {user?.apellidos}
       </h2>
       <p className="email"><FontAwesomeIcon icon={faEnvelope} /> {user?.email}</p>
-      {user?.iglesia && <div className="description"><FontAwesomeIcon icon={faPlaceOfWorship}/> {user.iglesia}</div>}
+      {user?.iglesia && <div className="description text-uppercase"><FontAwesomeIcon icon={faPlaceOfWorship}/> {user.iglesia}</div>}
       {user?.biografia && <div className="description"><FontAwesomeIcon icon={faCircleInfo}/> {user.biografia}</div>}
       
 

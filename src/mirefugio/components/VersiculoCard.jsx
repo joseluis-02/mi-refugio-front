@@ -29,18 +29,20 @@ export const VersiculoCard = ({userid,id,mensaje,libro,capitulo,versiculo,fecha,
     }
   return (
         <Container>
-            <div className="shadow  p-2 bg-light rounded">
-                <small>{obtenerSemanaLiteral(fecha)} {obtenerDia(fecha)}, {obtenerMesLiteral(fecha)} {obtenerGestion(fecha)}<cite> {obtenerHoraLocal(fecha)}</cite></small>
-                <p className='p-2'>{mensaje}</p>
+            <div className="shadow  p-2 bg-body rounded">
+                <small className='text-muted'>{obtenerSemanaLiteral(fecha)} {obtenerDia(fecha)}, {obtenerMesLiteral(fecha)} {obtenerGestion(fecha)}<cite> {obtenerHoraLocal(fecha)}</cite></small>
+                <p className='p-2 fw-semibold lh-base fs-5'>{mensaje}</p>
             </div>
-            <div className="d-flex mb-3">
+            <div className="d-flex mb-2">
                 <div className="me-auto p-2">
-                    <h6>{libro } <span>{capitulo}</span> : <span>{versiculo}</span></h6>
+                    <h6>{libro } 
+                    <small className='fst-italic text-muted'> {(capitulo!=0) && '  '+'capítulo '+ capitulo +','}</small> <small className='fst-italic text-muted'>{(versiculo) && '  versículo '+ versiculo}</small>
+                    </h6>
                 </div>
                 <div className="p-2">
                     <Button
                         size='sm'
-                        variant='light'
+                        variant='transparent'
                         onClick={() => onEventVersiculo(id,esMio)}
                     >
                         {
