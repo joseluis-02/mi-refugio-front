@@ -78,7 +78,7 @@ export function uploadAvatarApi(file) {
 
 export function updateInfoApi(data) {
   const url = `${API_HOST_PRODUCCION}/modificarperfil`;
-  console.log(data);
+  //console.log(data);
   const params = {
     method: "PUT",
     headers: {

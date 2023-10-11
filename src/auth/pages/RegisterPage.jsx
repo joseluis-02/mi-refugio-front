@@ -17,6 +17,7 @@ export const RegisterPage = () => {
   //Utilizando mi hook de useForm
   const {onInputChange,formState} = useForm({
     email: '',
+    celular: '',
     password: '',
     nombre: '',
     apellidos: '',
@@ -27,7 +28,7 @@ export const RegisterPage = () => {
   //Recuperacion de datos del estado del formulario
   const onSubmitRegister = (event) => {
     event.preventDefault();
-    if(formState.nombre==="" || formState.email==="" || formState.password==""){
+    if(formState.nombre==="" || formState.email==="" || formState.password==="" || formState.celular ===""){
       toast.warning("Los campos nombre, email y clave son obligatorios");
       return;
     }
@@ -197,6 +198,21 @@ export const RegisterPage = () => {
                             placeholder="mi@email.com"
                             name="email"
                             value={formState.email}
+                            onChange={onInputChange}
+                          />
+                        </FloatingLabel>
+                      </Form.Group>
+
+                      <Form.Group className="mb-1" >
+                        <FloatingLabel
+                          label="Número de celular"
+                        >
+                          <Form.Control 
+                            size="sm" 
+                            type="number"
+                            placeholder="celular"
+                            name="celular"
+                            value={formState.celular}
                             onChange={onInputChange}
                           />
                         </FloatingLabel>

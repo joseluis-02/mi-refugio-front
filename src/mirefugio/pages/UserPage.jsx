@@ -34,7 +34,7 @@ export const UserPage = () => {
       .then((response) => {
         if (!response) toast.error("El usuario que has visitado no existe");
         setUser(response);
-        cargarMisVersiculos(id);
+        cargarMisVersiculos();
       })
       .catch(() => {
         toast.error("El usuario que has visitado no existe");
@@ -75,18 +75,25 @@ export const UserPage = () => {
         >
           <FontAwesomeIcon icon={faNoteSticky} /> frases
         </Button>
-        <Button
+        {
+          (id ===uid)
+          ? <>
+          <Button
           className="btn-sm btn-light border-0"
           onClick={cargarUsuariosSeguidos}
-        >
-          <FontAwesomeIcon icon={faUserCheck} /> seguidos
-        </Button>
-        <Button
-          className="btn-sm btn-light border-0"
-          onClick={cargarUsuariosNuevos}
-        >
-          <FontAwesomeIcon icon={faUsers} /> usuarios
-        </Button>
+          >
+            <FontAwesomeIcon icon={faUserCheck} /> seguidos
+          </Button>
+          <Button
+            className="btn-sm btn-light border-0"
+            onClick={cargarUsuariosNuevos}
+          >
+            <FontAwesomeIcon icon={faUsers} /> usuarios
+          </Button>
+          </>
+          : <Button>volver</Button>
+        }
+        
       </div>
       <hr />
 
@@ -111,7 +118,7 @@ export const UserPage = () => {
                         esMio={(uid===id) ? true : false}
                     />
                   )))
-                : <p className="shadow my-2 p-2">Aún no has publicado frases</p>
+                : <p className="shadow my-2 p-2">Aún no ha publicado frases</p>
         }
       </div>
       }
@@ -129,14 +136,6 @@ export const UserPage = () => {
                     foto={u.foto}
                     iglesia={u.iglesia}
                   />
-                  
-                  {/*<Button 
-                    variant="light" 
-                    className="btn-sm"
-                    onClick={() => onSeguirUser(u.id) }
-                  >
-                    <span className="text-dark">Seguir</span>
-            </Button>*/}
                   
                 </li>
               </ul>
@@ -159,14 +158,6 @@ export const UserPage = () => {
                   foto={u.foto}
                   iglesia={u.iglesia}
                 />
-                
-                {/*<Button 
-                  variant="light" 
-                  className="btn-sm"
-                  onClick={() => onSeguirUser(u.id) }
-                >
-                  <span className="text-dark">Seguir</span>
-          </Button>*/}
                 
               </li>
             </ul>
