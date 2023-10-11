@@ -32,7 +32,7 @@ export const UsersPage = () => {
     //console.log(cargandoUsuariosNuevos);
     dispatch( obtenerUsuariosNuevosApi(0,searchText) );
     //console.log(cargandoUsuariosNuevos);
-    //onResetForm();
+    onResetForm();
   }
   const onSeguirUser = (id) => {
     alert("Aún no está implementado esta funcioón: "+id);

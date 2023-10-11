@@ -85,32 +85,33 @@ export const LoginPage = () => {
                         </FloatingLabel>
                       </Form.Group>
 
-                      <Form.Group className="mb-3">
+                      {/*<Form.Group className="mb-3">
                         <p className="small">
                           <a className="text-primary" href="#!">
                             Olvidé mi contraseña?
                           </a>
                         </p>
-                      </Form.Group>
+  </Form.Group>*/}
                       <div className="d-grid">
                         <Button 
-                          variant="info" 
+                          variant="dark" 
                           type="submit"
                           disabled={esAutenticado}
                         >
                           { (!esAutenticado)? 'Ingresar' : <Spinner animation="border"/> }
                         </Button>
                       </div>
-                      <div className="d-grid my-2">
+                      {/*<div className="d-grid my-2">
                         <Button 
-                          variant="light"
+                          className="opacity-70"
+                          variant="dark"
                           onClick={onGoogleSignIn}
                           disabled={esAutenticado}
                         >
                           <FontAwesomeIcon icon={faG} />
                           {' '}Iniciar con Google
                         </Button>
-                      </div>
+</div>*/}
                     </Form>
                     <div className="mt-3">
                       <p className="mb-0  text-center">

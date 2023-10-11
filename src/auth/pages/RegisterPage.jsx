@@ -1,16 +1,19 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Col, Button, Row, Container, Card, Form, FloatingLabel, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 import { useForm } from "../../hooks";
 import { AuthLayout } from '../loyout/AuthLayout';
 import { toast } from "react-toastify";
-import { registrarUsuario } from "../../store/auth";
+import { autoCompletarConGoogle, logoutGoogleFirebase, registrarUsuario } from "../../store/auth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faG} from '@fortawesome/free-solid-svg-icons';
 
 export const RegisterPage = () => {
 
   const {estado} = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  const [completar, setCompletar] = useState(false);
 
   const esAutenticado = useMemo(() => estado ==='verificando',[estado])
 
@@ -28,6 +31,7 @@ export const RegisterPage = () => {
   //Recuperacion de datos del estado del formulario
   const onSubmitRegister = (event) => {
     event.preventDefault();
+    dispatch( logoutGoogleFirebase() );
     if(formState.nombre==="" || formState.email==="" || formState.password==="" || formState.celular ===""){
       toast.warning("Los campos nombre, email y clave son obligatorios");
       return;
@@ -39,6 +43,17 @@ export const RegisterPage = () => {
     //console.log(formState);
     dispatch( registrarUsuario(formState) );
   }
+  const autoCompletarGoogle = async() => {
+    const {ok,email} = await autoCompletarConGoogle();
+    if(ok){
+      const em={
+        name: 'email',
+        value: email
+      }
+      onInputChange({target:em});
+    }
+    dispatch( logoutGoogleFirebase() );
+   }
   return (
     <AuthLayout>
       <Container>
@@ -189,19 +204,26 @@ export const RegisterPage = () => {
                       </Row>
                       </Form.Group>
 
-                      <Form.Group className="mb-1" >
-                        <FloatingLabel
-                          label="Correo electrónico"
-                        >
-                          <Form.Control 
-                            size="sm" type="email" 
-                            placeholder="mi@email.com"
-                            name="email"
-                            value={formState.email}
-                            onChange={onInputChange}
-                          />
-                        </FloatingLabel>
-                      </Form.Group>
+                      <div className="input-group my-2">
+                        <span className="input-group-text bg-white" id="basic-addon1">
+                          <button
+                            type="button"
+                            className="btn btn-sm rounded-circle btn-dark"
+                            disabled={esAutenticado}
+                            onClick={autoCompletarGoogle}
+                          >
+                            <FontAwesomeIcon icon={faG} />
+                          </button>
+                        </span>
+                        <Form.Control 
+                          type="email" 
+                          className="form-control"
+                          placeholder="Usa Google o escribe"
+                          name="email"
+                          value={formState.email}
+                          onChange={onInputChange}
+                        />
+                      </div>
 
                       <Form.Group className="mb-1" >
                         <FloatingLabel
@@ -234,7 +256,11 @@ export const RegisterPage = () => {
                       </Form.Group>
 
                       <div className="d-grid">
-                        <Button variant="info" type="submit">
+                        <Button 
+                          variant="dark" 
+                          type="submit"
+                          disabled={esAutenticado}  
+                        >
                         { (!esAutenticado)? 'Registrarse' : <Spinner animation="border"/> }
                         </Button>
                       </div>

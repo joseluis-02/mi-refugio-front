@@ -38,7 +38,7 @@ export const authSlice = createSlice({
         state.biografia = null;
         state.ubicaion = null
         state.expira = null;
-        state.errorMessage= payload.message;
+        state.errorMessage= payload?.message;
 
     },
     verificandoCredenciales: (state) => {
