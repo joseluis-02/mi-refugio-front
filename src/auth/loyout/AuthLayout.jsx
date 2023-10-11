@@ -14,7 +14,8 @@ export const AuthLayout = ({children}) => {
           <Col className="signin-signup__izquierda" sm={6}>
             <div className='col-sm-6'>
               <h2>
-                Una red social que te permite ver y compartir frases basados en contenidos bíblicos, mejora el estilo y la calidad de tu vida.
+                Una red social que te permite ver y compartir frases basados en contenidos bíblicos. 
+                ¡Mejora el estilo y la calidad de tu vida!
               </h2>
             </div>
           </Col>
