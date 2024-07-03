@@ -33,13 +33,21 @@ export const RegisterPage = () => {
     event.preventDefault();
     dispatch( logoutGoogleFirebase() );
     if(formState.nombre==="" || formState.email==="" || formState.password==="" || formState.celular ===""){
-      toast.warning("Los campos nombre, email y clave son obligatorios");
+      toast.warning("Los campos nombre, email, número de celular y clave son obligatorios");
       return;
     }
-    if(formState.password.length <= 6){
-      toast.warning("La contraseña debe tener mas de 6 caracteres");
+    if(formState.password.length <4){
+      toast.warning("La contraseña debe tener 4 caracteres numéricos");
       return;
     }
+    if(formState.password.length >4){
+      toast.warning("La contraseña debe tener 4 caracteres numéricos");
+      return;
+    }
+    if(formState.password == "1234"){
+        toast.warning("La clave debe ser diferente a: 1234");
+        return;
+      }
     //console.log(formState);
     dispatch( registrarUsuario(formState) );
   }
@@ -210,6 +218,7 @@ export const RegisterPage = () => {
                             type="button"
                             className="btn btn-sm rounded-circle btn-dark"
                             disabled={esAutenticado}
+                            /*disabled={true}*/
                             onClick={autoCompletarGoogle}
                           >
                             <FontAwesomeIcon icon={faG} />
@@ -231,7 +240,9 @@ export const RegisterPage = () => {
                         >
                           <Form.Control 
                             size="sm" 
-                            type="number"
+                            type="tel"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
                             placeholder="celular"
                             name="celular"
                             value={formState.celular}
@@ -242,15 +253,18 @@ export const RegisterPage = () => {
 
                       <Form.Group className="mb-1">
                         <FloatingLabel
-                          label="Crea una clave"
+                          label="Crea una clave de 4 dígitos"
                         >
                           <Form.Control 
                             size="sm" 
-                            type="password" 
-                            placeholder="Clave"
+                            type="password"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            placeholder="Clave cuatro números combinable)"
                             name="password"
                             value={formState.password}
                             onChange={onInputChange}
+                            maxLength={4}
                           />
                         </FloatingLabel>
                       </Form.Group>

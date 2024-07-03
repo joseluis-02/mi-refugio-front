@@ -11,7 +11,9 @@ import {faSearch} from '@fortawesome/free-solid-svg-icons';
 import { UserPerfil } from "../components/UserPerfil";
 
 export const UsersPage = () => {
-
+  useEffect(() => {
+    dispatch( obtenerUsuariosNuevosApi(0) );
+  }, []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -51,7 +53,7 @@ export const UsersPage = () => {
               <Form.Control
                 type="search"
                 className="form-control"
-                placeholder="¿Cuál es su nombre?"
+                placeholder="Escribe el nombre de tu amigo(a)"
                 name="searchText"
                 value={searchText}
                 onChange={ onInputChange }

@@ -89,7 +89,7 @@ export const registrarUsuario = (user) => {
         delete userTemp.dia;
         delete userTemp.mes;
         delete userTemp.anio;
-        //console.log(userTemp);
+        console.log(userTemp);
         const params = {
         method: "POST",
         headers: {
