@@ -26,7 +26,7 @@ export const UserAmbientePage = () => {
       });
     const onSubmitForm = (event) => {
     event.preventDefault();
-    if(formState.libroBiblico ===""||formState.capitulo ===""||formState.versiculo ===""||formState.mensaje ===""){
+    if(formState.libroBiblico ===""||formState.mensaje ===""){
         toast.warning("Los campos son obligatorios");
         return;
     }
@@ -44,22 +44,8 @@ export const UserAmbientePage = () => {
                   <Card className="shadow">
                      <Card.Body>
                             <Form onSubmit={onSubmitForm}>
-                            <Form.Group className="mb-1">
-                            <FloatingLabel
-                                    label="Libro bíblico"
-                                >
-                                    <Form.Control 
-                                    size="sm" 
-                                    aria-label="libroBiblico"
-                                    name="libroBiblico"
-                                    value={formState.libroBiblico}
-                                    onChange={onInputChange}
-                                    >
-                                    </Form.Control>
-                                </FloatingLabel>
-                            </Form.Group>
 
-                            <Form.Group className="mb-1">
+                            {/*<Form.Group className="mb-1">
                             <Row>
                                 <Col xs={6}>
                                     <FloatingLabel
@@ -90,18 +76,33 @@ export const UserAmbientePage = () => {
                                     </FloatingLabel>
                                 </Col>
                             </Row>
-                            </Form.Group>
+  </Form.Group>*/}
                             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                                 <Form.Label>Describe frase</Form.Label>
                                 <Form.Control
                                     size="sm" 
                                     as="textarea" 
                                     rows={4}
-                                    placeholder="mensaje:"
+                                    placeholder="mensaje..."
                                     name="mensaje"
                                     value={formState.mensaje}
                                     onChange={onInputChange}
                                 />
+                            </Form.Group>
+
+                            <Form.Group className="mb-1">
+                            <FloatingLabel
+                                    label="Autor (ej. Proverbios 1:1-4)"
+                                >
+                                    <Form.Control 
+                                    size="sm" 
+                                    aria-label="libroBiblico"
+                                    name="libroBiblico"
+                                    value={formState.libroBiblico}
+                                    onChange={onInputChange}
+                                    >
+                                    </Form.Control>
+                                </FloatingLabel>
                             </Form.Group>
 
                             <div className="d-grid">
@@ -114,7 +115,7 @@ export const UserAmbientePage = () => {
                     </Card>
                 </Col>
                 <Col sm={6}>
-                    <h4 className="mt-3"><em>Mis publicaciones</em></h4>
+                    <h4 className="mt-3"><em>Tus versículos publicados</em></h4>
                     <hr />
                     {
                         (isLoading)
@@ -135,7 +136,7 @@ export const UserAmbientePage = () => {
                                     esMio={true}
                                 />
                               )))
-                            : (<p className="shadow my-2 p-2">Aún no has publicado frases</p>)
+                            : (<p className="shadow my-2 p-2">Aún no publicaste frases bíblicas</p>)
                         )
                     }
                 </Col>
