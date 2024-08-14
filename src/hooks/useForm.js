@@ -1,19 +1,25 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-export const useForm = ( initialForm = {} ) => {
-  
-    const [ formState, setFormState ] = useState( initialForm );
+export const useForm = (initialForm = {}) => {
+
+    const [formState, setFormState] = useState(initialForm);
 
     const onInputChange = ({ target }) => {
         const { name, value } = target;
+        if (name == "password" && value.length > 6) {
+            console.log("Piso password");
+            return
+
+        }
         setFormState({
             ...formState,
-            [ name ]: value
+            [name]: value
         });
+
     }
 
     const onResetForm = () => {
-        setFormState( initialForm );
+        setFormState(initialForm);
     }
 
     return {

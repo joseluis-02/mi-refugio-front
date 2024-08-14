@@ -91,7 +91,7 @@ export const UserPage = () => {
             <FontAwesomeIcon icon={faUsers} /> usuarios
           </Button>
           </>
-          : <Button>volver</Button>
+          : <span></span>
         }
         
       </div>

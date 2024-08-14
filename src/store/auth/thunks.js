@@ -1,6 +1,8 @@
 
+import { async } from '@firebase/util';
 import {toast} from 'react-toastify';
 import { setTokenUser, userLoged, userLogout } from '../../api/auth';
+import { logoutFirebase, singInWithGoogle } from '../../firebase/providers';
 import { API_HOST_PRODUCCION } from '../../utils';
 import { login, logout,cargandoMiRefugio, verificandoCredenciales } from "./authSlice";
 
@@ -10,13 +12,7 @@ export const verificandoAutenticacion = () => {
         dispatch( verificandoCredenciales() );
     }
 }
-//Autenticandose con Google
-export const startGoogleSignIn = () => {
-    return ( dispatch ) => {
-        //console.log("Logueando con Google");
-        //Aquí va el código para iniciar sesion con google
-    }
-}
+
 //Iniciar sesion con email y password
 export const iniciarSesionEmailPassword = (user) => {
     return async( dispatch ) => {
@@ -51,6 +47,7 @@ export const iniciarSesionEmailPassword = (user) => {
             dispatch( startLogin() );
             
         }catch(error){
+            dispatch( logout({message: "ocurrió un error"}) );
             console.log("Error en la petición: "+ error.message);
         }
     }
@@ -79,7 +76,6 @@ export const startLogout = () => {
         dispatch( logout({message: null}) );
     }
 }
-
 //Registrar nuevo usuario
 export const registrarUsuario = (user) => {
     return async(dispatch) => {
@@ -88,12 +84,12 @@ export const registrarUsuario = (user) => {
         const userTemp = {
         ...user,
         email: user.email.toLowerCase(),
-        fechaNacimiento: `${user.anio}-${user.mes}-${user.dia}T00:00:00Z`
+        fechaNacimiento: `${user?.anio}-${user?.mes}-${user?.dia}T00:00:00Z`
         };
         delete userTemp.dia;
         delete userTemp.mes;
         delete userTemp.anio;
-        //console.log(userTemp);
+        console.log(userTemp);
         const params = {
         method: "POST",
         headers: {
@@ -106,6 +102,7 @@ export const registrarUsuario = (user) => {
             const result = await fetch(url, params);
             if (!result.ok){
                 toast.warning("Email ya se encuentra registrado");
+                dispatch( logout({message: 'Email ya se encuentra registrado'}) );
                 return;
             }
             //Iniciar cargar la app
@@ -114,7 +111,30 @@ export const registrarUsuario = (user) => {
 
             
         }catch(error){
+            dispatch( logout({message: 'Email ya se encuentra registrado'}) );
             console.log("Error en la petición: "+ error.message);
         }
+    }
+}
+//Autenticandose con Google
+export const startGoogleSignIn = () => {
+    return async(dispatch) => {
+        //return {ok,displayName,email,photoURL,phoneNumber,uid} =  await singInWithGoogle();
+        
+    }
+}
+export const autoCompletarConGoogle = async() => {
+        const {ok,displayName,email,photoURL,phoneNumber,uid} =  await singInWithGoogle();
+        return{
+            ok,
+            email
+        }
+}
+
+export const logoutGoogleFirebase = () => {
+    return async( dispatch ) => {
+        
+        await logoutFirebase();
+        dispatch( logout() );
     }
 }

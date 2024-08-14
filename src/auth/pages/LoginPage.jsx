@@ -27,11 +27,11 @@ export const LoginPage = () => {
     event.preventDefault();
     
     if(email===""){
-      toast.warning("Debe de ingresar un email");
+      toast.warning("Escriba su número de celular");
       return;
     }
     if(password===""){
-      toast.warning("Debe de ingresar la contraseña");
+      toast.warning("Escriba su clave de 4 digitos");
       return;
     }
     
@@ -59,11 +59,13 @@ export const LoginPage = () => {
                       
                       <Form.Group className="mb-3">
                         <FloatingLabel
-                            label="celular o email"
+                            label="Tu número de celular"
                         >
                           <Form.Control 
-                            type="text" 
-                            placeholder="celular o email"
+                            type="tel"
+                            inputMode="numeric"
+                            pattern="[0-9]*" 
+                            placeholder="celular"
                             name="email"
                             value={email}
                             onChange={ onInputChange }
@@ -73,11 +75,13 @@ export const LoginPage = () => {
 
                       <Form.Group className="mb-3">
                         <FloatingLabel
-                            label="Clave de acceso"
+                            label="Clave de 4 dígitos"
                         >
                           <Form.Control 
-                            type="password" 
-                            placeholder="Password"
+                            type="password"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            placeholder="Ingrese la clave"
                             name="password"
                             value={password}
                             onChange={ onInputChange }
@@ -85,32 +89,33 @@ export const LoginPage = () => {
                         </FloatingLabel>
                       </Form.Group>
 
-                      <Form.Group className="mb-3">
+                      {/*<Form.Group className="mb-3">
                         <p className="small">
                           <a className="text-primary" href="#!">
                             Olvidé mi contraseña?
                           </a>
                         </p>
-                      </Form.Group>
+  </Form.Group>*/}
                       <div className="d-grid">
                         <Button 
-                          variant="info" 
+                          variant="dark" 
                           type="submit"
                           disabled={esAutenticado}
                         >
                           { (!esAutenticado)? 'Ingresar' : <Spinner animation="border"/> }
                         </Button>
                       </div>
-                      <div className="d-grid my-2">
+                      {/*<div className="d-grid my-2">
                         <Button 
-                          variant="light"
+                          className="opacity-70"
+                          variant="dark"
                           onClick={onGoogleSignIn}
                           disabled={esAutenticado}
                         >
                           <FontAwesomeIcon icon={faG} />
                           {' '}Iniciar con Google
                         </Button>
-                      </div>
+</div>*/}
                     </Form>
                     <div className="mt-3">
                       <p className="mb-0  text-center">

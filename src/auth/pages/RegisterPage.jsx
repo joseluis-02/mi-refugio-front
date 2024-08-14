@@ -1,16 +1,19 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Col, Button, Row, Container, Card, Form, FloatingLabel, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 import { useForm } from "../../hooks";
 import { AuthLayout } from '../loyout/AuthLayout';
 import { toast } from "react-toastify";
-import { registrarUsuario } from "../../store/auth";
+import { autoCompletarConGoogle, logoutGoogleFirebase, registrarUsuario } from "../../store/auth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faG} from '@fortawesome/free-solid-svg-icons';
 
 export const RegisterPage = () => {
 
   const {estado} = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  const [completar, setCompletar] = useState(false);
 
   const esAutenticado = useMemo(() => estado ==='verificando',[estado])
 
@@ -28,17 +31,37 @@ export const RegisterPage = () => {
   //Recuperacion de datos del estado del formulario
   const onSubmitRegister = (event) => {
     event.preventDefault();
+    dispatch( logoutGoogleFirebase() );
     if(formState.nombre==="" || formState.email==="" || formState.password==="" || formState.celular ===""){
-      toast.warning("Los campos nombre, email y clave son obligatorios");
+      toast.warning("Los campos nombre, email, número de celular y clave son obligatorios");
       return;
     }
-    if(formState.password.length <= 6){
-      toast.warning("La contraseña debe tener mas de 6 caracteres");
+    if(formState.password.length <4){
+      toast.warning("La contraseña debe tener 4 caracteres numéricos");
       return;
     }
+    if(formState.password.length >4){
+      toast.warning("La contraseña debe tener 4 caracteres numéricos");
+      return;
+    }
+    if(formState.password == "1234"){
+        toast.warning("La clave debe ser diferente a: 1234");
+        return;
+      }
     //console.log(formState);
     dispatch( registrarUsuario(formState) );
   }
+  const autoCompletarGoogle = async() => {
+    const {ok,email} = await autoCompletarConGoogle();
+    if(ok){
+      const em={
+        name: 'email',
+        value: email
+      }
+      onInputChange({target:em});
+    }
+    dispatch( logoutGoogleFirebase() );
+   }
   return (
     <AuthLayout>
       <Container>
@@ -189,19 +212,27 @@ export const RegisterPage = () => {
                       </Row>
                       </Form.Group>
 
-                      <Form.Group className="mb-1" >
-                        <FloatingLabel
-                          label="Correo electrónico"
-                        >
-                          <Form.Control 
-                            size="sm" type="email" 
-                            placeholder="mi@email.com"
-                            name="email"
-                            value={formState.email}
-                            onChange={onInputChange}
-                          />
-                        </FloatingLabel>
-                      </Form.Group>
+                      <div className="input-group my-2">
+                        <span className="input-group-text bg-white" id="basic-addon1">
+                          <button
+                            type="button"
+                            className="btn btn-sm rounded-circle btn-dark"
+                            disabled={esAutenticado}
+                            /*disabled={true}*/
+                            onClick={autoCompletarGoogle}
+                          >
+                            <FontAwesomeIcon icon={faG} />
+                          </button>
+                        </span>
+                        <Form.Control 
+                          type="email" 
+                          className="form-control"
+                          placeholder="Usa Google o escribe"
+                          name="email"
+                          value={formState.email}
+                          onChange={onInputChange}
+                        />
+                      </div>
 
                       <Form.Group className="mb-1" >
                         <FloatingLabel
@@ -209,7 +240,9 @@ export const RegisterPage = () => {
                         >
                           <Form.Control 
                             size="sm" 
-                            type="number"
+                            type="tel"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
                             placeholder="celular"
                             name="celular"
                             value={formState.celular}
@@ -220,21 +253,28 @@ export const RegisterPage = () => {
 
                       <Form.Group className="mb-1">
                         <FloatingLabel
-                          label="Crea una clave"
+                          label="Crea una clave de 4 dígitos"
                         >
                           <Form.Control 
                             size="sm" 
-                            type="password" 
-                            placeholder="Clave"
+                            type="password"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            placeholder="Clave cuatro números combinable)"
                             name="password"
                             value={formState.password}
                             onChange={onInputChange}
+                            maxLength={4}
                           />
                         </FloatingLabel>
                       </Form.Group>
 
                       <div className="d-grid">
-                        <Button variant="info" type="submit">
+                        <Button 
+                          variant="dark" 
+                          type="submit"
+                          disabled={esAutenticado}  
+                        >
                         { (!esAutenticado)? 'Registrarse' : <Spinner animation="border"/> }
                         </Button>
                       </div>
