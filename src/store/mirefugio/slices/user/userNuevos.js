@@ -4,7 +4,7 @@ export const userNuevoSlice = createSlice({
    name: 'userNuevo',
    initialState: {
     cargandoUsuariosNuevos: false,
-    usuariosNuevos: []
+    usuariosNuevos: [],
    },
    reducers: {
        starGetUsuariosNuevos: (state, /* action */ ) => {

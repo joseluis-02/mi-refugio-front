@@ -56,7 +56,7 @@ export const UserPage = () => {
 
   const cargarUsuariosNuevos = () => {
     setOpcion(2);
-   dispatch( obtenerUsuariosNuevosApi(0) );
+   dispatch( obtenerUsuariosNuevosApi(1) );
   }
   const onNavigateBack = () => {
     navigator(-1);

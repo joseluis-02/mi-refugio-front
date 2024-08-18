@@ -4,28 +4,47 @@ import { API_HOST_PRODUCCION } from "../../../../utils";
 import { upperCamelCase } from "../../../../utils/transformarPalabras";
 import { versiculosApi } from "../../apis/versiculosApi";
 import { setMisVersiculos, startGetMisVersiculos } from "./misVersiculosSlice";
-import { starGetVersiculos,setVersiculoSeguidores } from "./versiculoSlice";
+import { starGetVersiculos,setVersiculoSeguidores,setFinalPage } from "./versiculoSlice";
 
-export const getVersiculosApi = (page = 0) => {
-    return async( dispatch ) => {
+export const getVersiculosApi = (page = 1) => {
+    return async( dispatch, getState ) => {
 
-        dispatch( starGetVersiculos() );
+        dispatch(starGetVersiculos());
 
-        //Para realizar peticiones http
         const token = getTokenUser();
         let headers = {
-                "Content-type": "application/json; charset=UTF-8",
-                "Authorization": 'Bearer ' + token
-         };
-        const {data, status} = await versiculosApi.get(`/leoversiculosseguidores?pagina=${page + 1}`,{
-            headers: headers
-        });
-        if(status != 200) return;
-        console.log(data)
-        dispatch( setVersiculoSeguidores({page: page, data: data }) );
-        console.log("getVersiculosApi");
-    }
-}
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": 'Bearer ' + token
+        };
+
+        try {
+            const {data, status} = await versiculosApi.get(`/leoversiculosseguidores?pagina=${page}`, {
+                headers: headers
+            });
+
+            if (status !== 200) return;
+
+            const hasMore = data===null?true:false;
+            if(hasMore){
+                dispatch(setFinalPage({
+                    hasMore:false
+                }));
+            }else{
+                dispatch(setVersiculoSeguidores({
+                    page,
+                    data,
+                    hasMore:true
+                }));
+            }
+            
+
+        } catch (error) {
+            console.error('Error fetching versiculos:', error);
+            // Manejo de errores
+        }
+    };
+};
+
 export const getMisVersiculosApi = (page = 0, id) => {
     return async( dispatch ) => {
 

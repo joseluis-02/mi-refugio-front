@@ -12,7 +12,7 @@ import { UserPerfil } from "../components/UserPerfil";
 
 export const UsersPage = () => {
   useEffect(() => {
-    dispatch( obtenerUsuariosNuevosApi(0) );
+    dispatch( obtenerUsuariosNuevosApi(1) );
   }, []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ export const UsersPage = () => {
     //console.log(usuariosNuevos);
     navigate(`?q=${ searchText }`);
     //console.log(cargandoUsuariosNuevos);
-    dispatch( obtenerUsuariosNuevosApi(0,searchText) );
+    dispatch( obtenerUsuariosNuevosApi(1,searchText) );
     //console.log(cargandoUsuariosNuevos);
     onResetForm();
   }
@@ -53,7 +53,7 @@ export const UsersPage = () => {
               <Form.Control
                 type="search"
                 className="form-control"
-                placeholder="Escribe el nombre de tu amigo(a)"
+                placeholder="Solo el nombre ej. (juan, ju o j)"
                 name="searchText"
                 value={searchText}
                 onChange={ onInputChange }

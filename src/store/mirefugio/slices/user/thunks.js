@@ -62,7 +62,8 @@ export const obtenerUsuariosSeguidosApi = (page=0) => {
         }
     }
 }
-export const obtenerUsuariosNuevosApi = (page=0,query='') => {
+export const obtenerUsuariosNuevosApi = (page=1,query='') => {
+    console.log('Es page '+page);
     return async(dispatch) => {
         dispatch( starGetUsuariosNuevos() );
         const token = getTokenUser();
@@ -70,7 +71,7 @@ export const obtenerUsuariosNuevosApi = (page=0,query='') => {
                 "Content-type": "application/json; charset=UTF-8",
                 "Authorization": 'Bearer ' + token
          };
-        const {data, status} = await versiculosApi.get(`/listausuarios?page=${page + 1}&type=nuevo&search=${query}`,{
+        const {data, status} = await versiculosApi.get(`/listausuarios?page=${page}&type=nuevo&search=${query}`,{
             headers: headers
         });
         if(status != 200){
