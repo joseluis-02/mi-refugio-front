@@ -9,8 +9,8 @@ export const userSlice = createSlice({
     apellidos: null,
     fechaNacimiento: null,
     email: null,
-    foto: null,
-    portada: null,
+    avatar: null,
+    avatar: null,
     biografia: null,
     ubicacion: null,
     iglesia: null,
@@ -27,8 +27,8 @@ export const userSlice = createSlice({
         state.apellidos= payload.apellidos;
         state.fechaNacimiento= payload.fechaNacimiento;
         state.email= payload.email;
-        state.foto= payload.foto;
-        state.portada= payload.portada;
+        state.foto= payload.avatar;
+        state.portada= payload.banner;
         state.biografia= payload.biografia;
         state.ubicacion= payload.ubicacion;
         state.iglesia = payload.iglesia;

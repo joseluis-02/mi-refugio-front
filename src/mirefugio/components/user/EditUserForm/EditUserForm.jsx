@@ -15,6 +15,8 @@ import { obtenerUsarioPerfilApi } from "../../../../store/mirefugio/slices/user"
 import { useForm } from "../../../../hooks";
 import { FloatingLabel, Form, InputGroup, Spinner } from "react-bootstrap";
 import "./EditUserForm.scss";
+import AvatarNoFound from "../../../../assets/png/user-default.png";
+import BannerNoFound from "../../../../assets/jpg/banner-defalut.jpg";
 
 
 
@@ -29,12 +31,12 @@ export const EditUserForm = ({user, setShowModal}) => {
 
   const {formState,onInputChange} = useForm(initialValue(user));
   const [loading, setLoading] = useState(false);
-  const banner = user?.portada
+  const banner = user?.banner
     ? `${API_HOST_PRODUCCION}/obtenerfotoportada?id=${user.id}`
-    : null;
-  const avatar = user?.foto
+    : BannerNoFound;
+  const avatar = user?.avatar
     ? `${API_HOST_PRODUCCION}/obtenerfotoperfil?id=${user.id}`
-    : null;
+    : AvatarNoFound;
 
   //Estados de la foto portada
   const [bannerUrl, setBannerUrl] = useState(banner);
@@ -70,7 +72,7 @@ export const EditUserForm = ({user, setShowModal}) => {
     getRootProps: getRootAvatarProps,
     getInputProps: getInputAvatarProps,
   } = useDropzone({
-    accept: "image/jpeg, image/png, image/gif, image/jpg",
+    accept: "image/jpeg, image/png, image/jpg",
     noKeyboard: true,
     multiple: false,
     onDrop: onDropAvatar,
@@ -81,7 +83,7 @@ export const EditUserForm = ({user, setShowModal}) => {
     e.preventDefault();
     setLoading(true);
 
-    if (bannerFile) {
+    /*if (bannerFile) {
       await uploadBannerApi(bannerFile).catch(() => {
         toast.error("Error! al subir el nuevo foto portada");
         //console.log("error portada");
@@ -92,7 +94,7 @@ export const EditUserForm = ({user, setShowModal}) => {
         toast.error("Error! al subir el nuevo foto perfil");
         //console.log("error perfil");
       });
-    }
+    }*/
 
     const {ok} = await updateInfoApi(formState);
     if (!ok){
@@ -103,7 +105,7 @@ export const EditUserForm = ({user, setShowModal}) => {
     //navigate(`?id=${ uid }`);
     //<Navigate to={`/usuario${uid}`}/>
     //dispatch( obtenerUsarioPerfilApi(uid) );
-    window.location.reload(true);
+    //window.location.reload(true);
     //this.reload();
   }
 
@@ -115,7 +117,7 @@ export const EditUserForm = ({user, setShowModal}) => {
           style={{ backgroundImage: `url('${bannerUrl}')` }}
           {...getRootBannerProps()}
         >
-          <input {...getInputBannerProps()}/>
+          <input {...getInputBannerProps()} />
           <FontAwesomeIcon icon={faImages} />
           {/*<Camera /> <FontAwesomeIcon icon={faCamera} />*/}
         </div>

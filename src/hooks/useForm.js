@@ -7,7 +7,7 @@ export const useForm = (initialForm = {}) => {
     const onInputChange = ({ target }) => {
         const { name, value } = target;
         if (name == "password" && value.length > 6) {
-            console.log("Piso password");
+            //console.log("Piso password");
             return
 
         }

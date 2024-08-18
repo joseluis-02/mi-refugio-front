@@ -5,7 +5,6 @@ export function getUserApi(id) {
 
   const params = {
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${getTokenUser()}`
     }
   };
@@ -59,6 +58,7 @@ export function uploadAvatarApi(file) {
   const params = {
     method: "POST",
     headers: {
+      'Content-Type':'multipart/form-data',
       Authorization: `Bearer ${getTokenUser()}`
     },
     body: formData

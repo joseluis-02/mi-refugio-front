@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import ConfigModal from "../../Modal/EditarInfo";
 import AvatarNoFound from "../../../../assets/png/user-default.png";
 import PortadaNoFound from "../../../../assets/jpg/banner-defalut.jpg";
@@ -8,49 +8,86 @@ import { EditUserForm } from "../EditUserForm";
 import {
   checkFollowApi,
   followUserApi,
-  unfollowUserApi
+  unfollowUserApi,
 } from "../../../../api/follow";
 import "./BannerAvatar.scss";
 
-
-
-export const BannerAvatar = ({user, loggedUser}) => {
+export const BannerAvatar = ({ user, loggedUser }) => {
   const [showModal, setShowModal] = useState(false);
   const [following, setFollowing] = useState(null);
-  const [reloadFollow, setReloadFollow] = useState(false);
-  //console.log(user);
-  //console.log(loggedUser);
-  const bannerUrl = user?.portada
+  const [loading, setLoading] = useState(false);
+  const [userLoading, setUserLoading] = useState(true);
+
+  console.log('following'+following);
+  const bannerUrl = user?.banner
     ? `${API_HOST_PRODUCCION}/obtenerfotoportada?id=${user.id}`
     : PortadaNoFound;
-  const avatarUrl = user?.foto
+  const avatarUrl = user?.avatar
     ? `${API_HOST_PRODUCCION}/obtenerfotoperfil?id=${user.id}`
     : AvatarNoFound;
 
   useEffect(() => {
     if (user) {
-      checkFollowApi(user?.id).then(response => {
-        if (response?.status) {
-          setFollowing(true);
-        } else {
-          setFollowing(false);
-        }
-      });
+      setUserLoading(false);
+    } else {
+      setUserLoading(true);
     }
-    setReloadFollow(false);
-  }, [user, reloadFollow]);
+  }, [user]);
 
-  const onFollow = () => {
-    followUserApi(user.id).then(() => {
-      setReloadFollow(true);
-    });
+  useEffect(() => {
+    // Verifica la relación de seguimiento cada vez que cambia el usuario
+    if (user && loggedUser && user.id !== loggedUser._id) {
+      setLoading(true);
+      checkFollowApi(user.id)
+        .then((response) => {
+          console.log("response "+response);
+          setFollowing(response);
+        })
+        .catch((error) => {
+          console.error("Error al verificar seguimiento:", error);
+          setFollowing(false);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      setFollowing(null); // Es el perfil del propio usuario
+    }
+  }, [user, loggedUser]);
+
+  const onFollow = async () => {
+    setLoading(true);
+    try {
+      await followUserApi(user.id);
+      setFollowing(true);
+    } catch (error) {
+      console.error("Error al seguir al usuario:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const onUnfollow = () => {
-    unfollowUserApi(user.id).then(() => {
-      setReloadFollow(true);
-    });
+  const onUnfollow = async () => {
+    setLoading(true);
+    try {
+      await unfollowUserApi(user.id);
+      setFollowing(false);
+    } catch (error) {
+      console.error("Error al dejar de seguir al usuario:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (userLoading) {
+    return (
+      <div className="loading-container">
+        <Spinner animation="border" role="status">
+          <span className="sr-only">Cargando...</span>
+        </Spinner>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -67,15 +104,52 @@ export const BannerAvatar = ({user, loggedUser}) => {
             <Button onClick={() => setShowModal(true)}>Editar perfil</Button>
           )}
 
-          {loggedUser._id !== user.id &&
-            following !== null &&
-            (following ? (
-              <Button onClick={onUnfollow} className="unfollow">
-                <span>Siguiendo</span>
-              </Button>
-            ) : (
-              <Button onClick={onFollow}>Seguir</Button>
-            ))}
+          {loggedUser._id !== user.id && following !== null && (
+            <div className="follow-section">
+              {following ? (
+                <>
+                  <Button
+                    onClick={onUnfollow}
+                    className="unfollow"
+                    style={{ backgroundColor: "red", borderColor: "red" }}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      "Dejar de seguir"
+                    )}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    onClick={onFollow}
+                    style={{ backgroundColor: "blue", borderColor: "blue" }}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      "Seguir"
+                    )}
+                  </Button>
+                </>
+              )}
+            </div>
+          )}
         </div>
       )}
 
@@ -85,11 +159,8 @@ export const BannerAvatar = ({user, loggedUser}) => {
         title="Editar perfil"
         user={user}
       >
-        <EditUserForm 
-          user={user}
-          setShowModal={setShowModal}
-        />
+        <EditUserForm user={user} setShowModal={setShowModal} />
       </ConfigModal>
     </div>
   );
-}
+};

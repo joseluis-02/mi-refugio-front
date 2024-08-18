@@ -14,7 +14,7 @@ export const obtenerUsuario = (id) => {
         const {data, status} = await versiculosApi.get(`/verperfil?id=${id}`,{
             headers: headers
         });
-        if(status != 201){
+        if(status != 200){
             return null;
         }else{
             console.log(data);
@@ -30,12 +30,12 @@ export const obtenerUsarioPerfilApi = (id) => {
         const token = getTokenUser();
         let headers = {
                 "Content-type": "application/json; charset=UTF-8",
-                "Authorization": 'Bearer ' + token
+                "Authorization": 'Bearer ' + token,
          };
         const {data, status} = await versiculosApi.get(`/verperfil?id=${id}`,{
             headers: headers
         });
-        if(status != 201) return;
+        if(status != 200) return;
         dispatch( setUserData(data) );
         console.log("obtenerUsarioPerfilApi");
     }
@@ -52,7 +52,7 @@ export const obtenerUsuariosSeguidosApi = (page=0) => {
         const {data, status} = await versiculosApi.get(`/listausuarios?page=${page + 1}&type=seguido&search=`,{
             headers: headers
         });
-        if(status != 201){
+        if(status != 200){
             dispatch( errorGetUsuariosSeguidos() );
             return;
         }else{
@@ -73,7 +73,7 @@ export const obtenerUsuariosNuevosApi = (page=0,query='') => {
         const {data, status} = await versiculosApi.get(`/listausuarios?page=${page + 1}&type=nuevo&search=${query}`,{
             headers: headers
         });
-        if(status != 201){
+        if(status != 200){
             dispatch( errorGetUsuariosNuevos() );
             return;
         }

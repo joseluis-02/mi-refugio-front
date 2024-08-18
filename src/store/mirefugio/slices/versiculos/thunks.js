@@ -20,7 +20,8 @@ export const getVersiculosApi = (page = 0) => {
         const {data, status} = await versiculosApi.get(`/leoversiculosseguidores?pagina=${page + 1}`,{
             headers: headers
         });
-        if(status != 201) return;
+        if(status != 200) return;
+        console.log(data)
         dispatch( setVersiculoSeguidores({page: page, data: data }) );
         console.log("getVersiculosApi");
     }
@@ -39,7 +40,7 @@ export const getMisVersiculosApi = (page = 0, id) => {
         const {data, status} = await versiculosApi.get(`/leoversiculos?id=${id}&pagina=${page + 1}`,{
             headers: headers
         });
-        if(status != 201) return;
+        if(status != 200) return;
         dispatch( setMisVersiculos( {page: page, data: data}) );
         console.log("getMisVersiculosApi");
     }
@@ -50,8 +51,10 @@ export const registrarVersiculoApi = (frase, id) => {
         const url = `${API_HOST_PRODUCCION}/versiculo`;
         const dataTemp = {
         ...frase,
+        mensaje: frase.mensaje.trim(),
         libroBiblico: upperCamelCase(frase.libroBiblico.trim()),
         capitulo: parseInt(frase.capitulo.trim(), 10),
+        versiculo: parseInt(frase.versiculo.trim(), 10),
         };
         //console.log(userTemp);
         const params = {
@@ -64,7 +67,7 @@ export const registrarVersiculoApi = (frase, id) => {
         };
         try{
             const result = await fetch(url, params);
-            //console.log(result);
+            console.log(result);
             if (!result.ok){
                 toast.warning("No se pudo publicar la frase");
                 return;
@@ -94,7 +97,7 @@ export const borrarVersiculoApi = (id,userid, opcion) => {
             const {data, status} = await versiculosApi.delete(`/eliminarversiculo?id=${id}`,{
                 headers: headers
             });
-            if(status != 201){
+            if(status != 200){
                 toast.warning("Ocurrió un error no se pudo eliminar");
                 return;
             }else{

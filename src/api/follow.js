@@ -70,6 +70,7 @@ export function getFollowsApi(paramsUrl) {
   const url = `${API_HOST_PRODUCCION}/listausuarios?${paramsUrl}`;
 
   const params = {
+    method: 'GET',
     headers: {
       Authorization: `Bearer ${getTokenUser()}`,
     },

@@ -20,17 +20,17 @@ export const UserAmbientePage = () => {
     }, []);
     const {onInputChange,formState,onResetForm} = useForm({
         libroBiblico: '',
-        capitulo: '',
-        versiculo: '',
+        capitulo: 0,
+        versiculo: 0,
         mensaje: ''
       });
     const onSubmitForm = (event) => {
     event.preventDefault();
-    if(formState.libroBiblico ===""||formState.mensaje ===""){
-        toast.warning("Los campos son obligatorios");
+    if(formState.libroBiblico ===""||formState.mensaje ==="" || formState.capitulo===0||formState.versiculo===0){
+        toast.warning("Todo los campos son obligatorios");
         return;
     }
-    //console.log(formState);
+    console.log(formState);
     dispatch( registrarVersiculoApi(formState,uid) );
     onResetForm();
     }
@@ -44,8 +44,21 @@ export const UserAmbientePage = () => {
                   <Card className="shadow">
                      <Card.Body>
                             <Form onSubmit={onSubmitForm}>
-
-                            {/*<Form.Group className="mb-1">
+                            <Form.Group className="mb-1">
+                            <FloatingLabel
+                                    label="Libro bíblico"
+                                >
+                                    <Form.Control 
+                                    size="sm" 
+                                    aria-label="libroBiblico"
+                                    name="libroBiblico"
+                                    value={formState.libroBiblico}
+                                    onChange={onInputChange}
+                                    >
+                                    </Form.Control>
+                                </FloatingLabel>
+                            </Form.Group>
+                            <Form.Group className="mb-1">
                             <Row>
                                 <Col xs={6}>
                                     <FloatingLabel
@@ -67,7 +80,7 @@ export const UserAmbientePage = () => {
                                     >
                                     <Form.Control 
                                         size="sm" 
-                                        type="text" 
+                                        type="number" 
                                         placeholder="versículo"
                                         name="versiculo"
                                         value={formState.versiculo}
@@ -76,7 +89,7 @@ export const UserAmbientePage = () => {
                                     </FloatingLabel>
                                 </Col>
                             </Row>
-  </Form.Group>*/}
+                        </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                                 <Form.Label>Describe frase</Form.Label>
                                 <Form.Control
@@ -89,22 +102,6 @@ export const UserAmbientePage = () => {
                                     onChange={onInputChange}
                                 />
                             </Form.Group>
-
-                            <Form.Group className="mb-1">
-                            <FloatingLabel
-                                    label="Autor (ej. Proverbios 1:1-4)"
-                                >
-                                    <Form.Control 
-                                    size="sm" 
-                                    aria-label="libroBiblico"
-                                    name="libroBiblico"
-                                    value={formState.libroBiblico}
-                                    onChange={onInputChange}
-                                    >
-                                    </Form.Control>
-                                </FloatingLabel>
-                            </Form.Group>
-
                             <div className="d-grid">
                                 <Button variant="light" type="submit">
                                 { (true)? (<span><FontAwesomeIcon icon={faSave} />  Publicar frase</span>) : <Spinner animation="border"/> }

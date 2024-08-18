@@ -1,7 +1,14 @@
-export const obtenerMesLiteral = (fecha) => {
-    const f = new Date(fecha);
-    const month = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-    return month[f.getMonth()];
+export const obtenerMesLiteral = (fechaISO) => {
+     // Crear un objeto Date a partir de la cadena ISO 8601
+  const fecha = new Date(fechaISO);
+
+  // Definir los nombres de los meses en español
+  const meses = [
+    "enero", "febrero", "marzo", "abril", "mayo", "junio", 
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+  ];
+  const mes = meses[fecha.getUTCMonth()]; // getMonth() retorna un valor de 0 a 11
+  return mes;
 }
 export const obtenerSemanaLiteral = (fecha) => {
     const f = new Date(fecha);
@@ -15,10 +22,11 @@ export const obtenerHoraLocal = (fecha) => {
 
 export const obtenerDia = (fecha) => {
     const f = new Date(fecha);
-    return f.getDate() +1;
+    // Obtener el día, mes y año
+    return f.getUTCDate();
 }
 
 export const obtenerGestion = (fecha) => {
     const f = new Date(fecha);
-    return f.getFullYear();
+    return f.getUTCFullYear();
 }

@@ -34,8 +34,8 @@ export const iniciarSesionEmailPassword = (user) => {
         try{
             const result = await fetch(url, params);
             if (!result.ok){
-                toast.warning("Email/password inválidas");
-                dispatch( logout({message: "Email/password inválidas"}) );
+                toast.warning("Celular o email/password inválidos");
+                dispatch( logout({message: "Celular o email/password inválidos"}) );
                 return;
             }
             //Iniciar cargar la app

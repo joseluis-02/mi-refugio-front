@@ -17,6 +17,7 @@ export const NavBarApp = () => {
 
   const {uid} = useSelector(state => state.auth);
   const {foto} = useSelector(state => state.user);
+  console.log('Perfil: ' + foto);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch( obtenerUsarioPerfilApi(uid) );

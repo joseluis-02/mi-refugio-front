@@ -27,11 +27,11 @@ export const LoginPage = () => {
     event.preventDefault();
     
     if(email===""){
-      toast.warning("Escriba su número de celular");
+      toast.warning("Escriba su número de celular o email");
       return;
     }
     if(password===""){
-      toast.warning("Escriba su clave de 4 digitos");
+      toast.warning("Escriba su clave de 6 dígitos");
       return;
     }
     
@@ -59,12 +59,12 @@ export const LoginPage = () => {
                       
                       <Form.Group className="mb-3">
                         <FloatingLabel
-                            label="Tu número de celular"
+                            label="Tu número de celular o email"
                         >
                           <Form.Control 
-                            type="tel"
-                            inputMode="numeric"
-                            pattern="[0-9]*" 
+                            type="text"
+                            inputMode="email" 
+                            pattern="^[0-9]*$|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                             placeholder="celular"
                             name="email"
                             value={email}
@@ -75,7 +75,7 @@ export const LoginPage = () => {
 
                       <Form.Group className="mb-3">
                         <FloatingLabel
-                            label="Clave de 4 dígitos"
+                            label="Clave de 6 dígitos numéricos"
                         >
                           <Form.Control 
                             type="password"

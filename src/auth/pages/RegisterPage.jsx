@@ -36,16 +36,16 @@ export const RegisterPage = () => {
       toast.warning("Los campos nombre, email, número de celular y clave son obligatorios");
       return;
     }
-    if(formState.password.length <4){
-      toast.warning("La contraseña debe tener 4 caracteres numéricos");
+    if(formState.password.length <6){
+      toast.warning("La contraseña debe tener 6 caracteres numéricos");
       return;
     }
-    if(formState.password.length >4){
-      toast.warning("La contraseña debe tener 4 caracteres numéricos");
+    if(formState.password.length >6){
+      toast.warning("La contraseña debe tener 6 caracteres numéricos");
       return;
     }
-    if(formState.password == "1234"){
-        toast.warning("La clave debe ser diferente a: 1234");
+    if(formState.password == "1234" ||formState.password == "0123" ||formState.password == "3210" || formState.password === "4321"){
+        toast.warning("La clave no permite números secuenciales");
         return;
       }
     //console.log(formState);

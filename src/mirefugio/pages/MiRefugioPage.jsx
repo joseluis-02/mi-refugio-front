@@ -15,8 +15,8 @@ export const MiRefugioPage = () => {
   }, [])
   
   const { isLoading,versiculos } = useSelector(state => state.versiculo);
-  //console.log(versiculos);
-  //console.log(isLoading);
+  //console.log('Home: '+versiculos._id);
+  console.log(isLoading);
   return (
     <>
       <NavBarApp />
@@ -27,18 +27,18 @@ export const MiRefugioPage = () => {
         {
           (versiculos)
           ?(
-              versiculos.map( ({_id,usuario,usuariorelacionid,Versiculos}) => (
-                <Row className="border-top border-bottom bg-light" key={Versiculos._id} >
+              versiculos.map( ({_id,userId,userRelationId,Bibliazo}) => (
+                <Row className="border-top border-bottom bg-light" key={Bibliazo?._id} >
                   <UserVersiculoCard
-                    id={usuariorelacionid}
+                    id={userRelationId}
                   />
                   <VersiculoCard
-                    mensaje={Versiculos.mensaje}
-                    libro={Versiculos.libroBiblico}
-                    capitulo={Versiculos.capitulo}
-                    versiculo={Versiculos.versiculo}
-                    fecha={Versiculos.fechaPublicado}
-                    id={Versiculos._id}
+                    mensaje={Bibliazo?.mensaje}
+                    libro={Bibliazo?.libroBiblico}
+                    capitulo={Bibliazo?.capitulo}
+                    versiculo={Bibliazo?.versiculo}
+                    fecha={Bibliazo?.fechaPublicado}
+                    id={Bibliazo?._id}
                     esMio={false}
                   />
                 </Row>
