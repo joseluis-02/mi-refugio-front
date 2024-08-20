@@ -3,6 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://joseluis-02.github.io/mi-refugio-front",
+
   "scripts": {
     "dev": "vite",
     "build": "vite build",
