@@ -253,7 +253,7 @@ export const RegisterPage = () => {
 
                       <Form.Group className="mb-1">
                         <FloatingLabel
-                          label="Crea una clave de 4 dígitos"
+                          label="Crea una clave de 6 dígitos"
                         >
                           <Form.Control 
                             size="sm" 
