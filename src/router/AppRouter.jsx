@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { Navigate, Route, Routes,BrowserRouter  } from 'react-router-dom'
+import { Navigate, Route, Routes  } from 'react-router-dom'
 import { AuthRoutes } from '../auth/routes/AuthRoutes'
 import { LogoMiRefugio } from '../components';
 import { MiRefugioRoutes } from '../mirefugio/routes/MiRefugioRoutes';
@@ -18,7 +18,6 @@ export const AppRouter = () => {
   }
 
   return (
-    <BrowserRouter basename="/mi-refugio-front">
     <Routes>
       {
         (estado === 'verificado')
@@ -27,6 +26,5 @@ export const AppRouter = () => {
       }
       <Route path="/*" element={ <Navigate to='/auth/login'/>} />
     </Routes>
-    </BrowserRouter>
   )
 }
