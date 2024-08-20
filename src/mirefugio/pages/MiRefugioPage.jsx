@@ -55,9 +55,13 @@ export const MiRefugioPage = () => {
             </p>
           )}
           
-          <div className="text-center my-4">
+          <div className="text-center mb-4 mt-4">
             {hasMore ? (
-              <Button onClick={handleLoadMore} disabled={isLoading}>
+              <Button 
+                onClick={handleLoadMore} 
+                disabled={isLoading} 
+                style={{ marginBottom: '20px' }}  // Margen en línea
+              >
                 {isLoading ? (
                   <Spinner animation="border" size="sm" />
                 ) : (
@@ -65,7 +69,7 @@ export const MiRefugioPage = () => {
                 )}
               </Button>
             ) : (
-              <p className="shadow my-2 p-2">
+              <p style={{ paddingBottom: '20px' }}>
                 No hay más elementos para mostrar.
               </p>
             )}

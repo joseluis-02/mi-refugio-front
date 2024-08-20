@@ -92,7 +92,7 @@ export const registrarVersiculoApi = (frase, id) => {
                 return;
             }
             //Iniciar cargar la app
-            toast.success("Ok! versículo publicado");
+            //toast.success("Ok! versículo publicado");
             dispatch( getMisVersiculosApi(0,id));
 
             
