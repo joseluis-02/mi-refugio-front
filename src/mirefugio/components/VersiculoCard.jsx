@@ -19,7 +19,7 @@ export const VersiculoCard = ({ userid, id, mensaje, libro, capitulo, versiculo,
             setIsDeleting(true);
             try {
                 await dispatch(borrarVersiculoApi(id, userid, esMio));
-                //await dispatch(getMisVersiculosApi(0, userid)); // Recargar la lista después de borrar
+                await dispatch(getMisVersiculosApi(0, userid)); // Recargar la lista después de borrar
             } catch (error) {
                 console.error("Error al borrar versículo:", error);
             } finally {

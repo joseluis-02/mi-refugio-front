@@ -121,7 +121,7 @@ export const borrarVersiculoApi = (id,userid, opcion) => {
                 return;
             }else{
                 toast.success("Se eliminó exitosamente");
-                dispatch( getMisVersiculosApi(0,userid) );
+                //dispatch( getMisVersiculosApi(0,userid) );
             }
          }else{
             //Aquí va el código para guardar la reacción

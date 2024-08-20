@@ -44,7 +44,7 @@ export const RegisterPage = () => {
       toast.warning("La contraseña debe tener 6 caracteres numéricos");
       return;
     }
-    if(formState.password == "1234" ||formState.password == "0123" ||formState.password == "3210" || formState.password === "4321"){
+    if(formState.password == "123456" ||formState.password == "654321" ||formState.password == "543210" || formState.password === "012345"){
         toast.warning("La clave no permite números secuenciales");
         return;
       }
@@ -260,11 +260,11 @@ export const RegisterPage = () => {
                             type="password"
                             inputMode="numeric"
                             pattern="[0-9]*"
-                            placeholder="Clave cuatro números combinable)"
+                            placeholder="Clave de 6 dígitos números combinado)"
                             name="password"
                             value={formState.password}
                             onChange={onInputChange}
-                            maxLength={4}
+                            maxLength={6}
                           />
                         </FloatingLabel>
                       </Form.Group>
